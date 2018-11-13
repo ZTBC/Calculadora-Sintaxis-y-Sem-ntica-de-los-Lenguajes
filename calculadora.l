@@ -32,10 +32,12 @@ HEXADECIMAL 0[xX][0-9a-fA-F]+
 
 
 
-{OCTAL}           {yylval = octal(atoi(yytext)); return NUM;}
-{NUMEROD}       {yylval = atof(yytext); return NUM;}
-{NUMEROE}      {yylval=atof (yytext); return NUM;}
-{HEXADECIMAL}  {yylval = hexadecimal(yytext); return NUM;}
+
+
+{OCTAL}        {yylval.f = octal(atoi(yytext)); return NUM;}
+{NUMEROD}      {yylval.f = atof(yytext); return NUM;}
+{NUMEROE}      {yylval.f = atof (yytext); return NUM;}
+{HEXADECIMAL}  {yylval.f = hexadecimal(yytext); return NUM;}
 
 
 "+"     {return '+';}
@@ -44,13 +46,11 @@ HEXADECIMAL 0[xX][0-9a-fA-F]+
 "*"     {return '*';}
 "^"     {return '^';}
 "\n"    {return '\n';}
-
+"("     {return '(';}
+")"     {return ')';}
 %%
 
-//{OCTAL}           {float v1 = octal(atoi(yytext)); printf("%f\n",v1);}
-//{HEXADECIMAL}  { = hexadecimal(yytext); return NUM;}
-//{NUMEROD}       { = atof(yytext); return NUM;}
-//{NUMEROE}      { =atof (yytext); return NUM;}
+
 //----------CONVERTIDOR DECIMAL A REAL
 int decimalAReal(int numeroEntero)
 {

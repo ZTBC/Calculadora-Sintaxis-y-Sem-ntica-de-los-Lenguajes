@@ -1,5 +1,3 @@
-/* Calculadora de notación polaca inversa */
-
 %{
 
 #include <math.h>
@@ -7,24 +5,34 @@
 #include <ctype.h>
 %}
 
-%token NUM
+%union
+{
+    float f;
+}
+%type <f> exp
+%token <f> NUM
 
-%% /* A continuación las reglas gramaticales y las acciones */
+%left '+' '-'
+%left '*' '/'
+%left '^'
+
+%%
 
 input:    /* vacío */
         | input line
 ;
 
 line:     '\n'
-        | exp '\n'  { printf ("\t %d\n", $1); }
+        | exp '\n'  { printf ("\t %f\n", $1); }
 ;
 
-exp:      NUM             { $$ = $1;         }
-        | exp exp '+'     { $$ = $1 + $2;    }
-        | exp exp '-'     { $$ = $1 - $2;    }
-        | exp exp '*'     { $$ = $1 * $2;    }
-        | exp exp '/'     { $$ = $1 / $2;    }
-        | exp exp '^'     { $$ = pow ($1, $2); }
+exp:      NUM              { $$ = $1;         }
+        | exp '+' exp      { $$ = $1 + $3;    }
+        | exp '-' exp      { $$ = $1 - $3;    }
+        | exp '*' exp      { $$ = $1 * $3;    }
+        | exp '/' exp      { $$ = $1 / $3;    }
+        | exp '^' exp      { $$ = pow ($1, $3); }
+        | '(' exp ')'      { $$= $2 ;}
 
 ;
 %%
